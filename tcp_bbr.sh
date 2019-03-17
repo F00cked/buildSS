@@ -2,6 +2,7 @@
 Green_font="\033[32m" && Yellow_font="\033[33m" && Red_font="\033[31m" && Font_suffix="\033[0m"
 Info="${Green_font}[Info]${Font_suffix}"
 Error="${Red_font}[Error]${Font_suffix}"
+
 echo -e "${Green_font}
 #======================================================
 # Project:  tcp_bbr General
@@ -14,12 +15,12 @@ echo -e "${Green_font}
 ${Font_suffix}"
 
 check_system(){
-	#sort
+	#检查系统发行版是否为 CentOS 6/7
 	[[ -z "`cat /etc/redhat-release | grep -iE "CentOS"`" ]] && echo -e "${Error} Only support CentOS 6/7!" && exit 1
-	#number
+	#检查系统版本号
 	[[ ! -z "`cat /etc/redhat-release | grep -iE " 7."`" ]] && bit=7
 	[[ ! -z "`cat /etc/redhat-release | grep -iE " 6."`" ]] && bit=6
-	#bit
+	#检查系统位数（bit）
 	[[ "`uname -m`" != "x86_64" ]] && echo -e "${Error} Only support 64bit !" && exit 1
 }
 
@@ -34,12 +35,13 @@ check_kvm(){
 }
 
 directory(){
+	#创建安装目录
 	[[ ! -d /home/tcp_nanqinlang ]] && mkdir -p /home/tcp_nanqinlang
 	cd /home/tcp_nanqinlang
 }
 
 check_kernel(){
-	# check 4.12.10 already installed or not
+	#检查系统内核版本是否已经是 4.12.10
 	already_image=`rpm -qa | grep kernel-4.12.10`
 	already_devel=`rpm -qa | grep kernel-devel-4.12.10`
 	already_headers=`rpm -qa | grep kernel-headers-4.12.10`
@@ -118,9 +120,10 @@ install_headers(){
 	yum  install -y kernel-ml-headers-4.12.10-1.el${bit}.elrepo.x86_64.rpm
 }
 
+#根据系统版本更新 Grub 配置
 update-grub(){
-	[["${bit}" = "7"]] && grub2-mkconfig -o /boot/grub2/grub.cfg && grub2-set-default 0
-	[["${bit}" = "6"]] && sed -i '/default=/d' /boot/grub/grub.conf && echo -e "\ndefault=0\c" >> /boot/grub/grub.conf
+	[[ "${bit}" = "7" ]] && grub2-mkconfig -o /boot/grub2/grub.cfg && grub2-set-default 0
+	[[ "${bit}" = "6" ]] && sed -i '/default=/d' /boot/grub/grub.conf && echo -e "\ndefault=0\c" >> /boot/grub/grub.conf
 }
 
 rpm_list(){
