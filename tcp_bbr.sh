@@ -20,17 +20,17 @@ check_system(){
 	[[ ! -z "`cat /etc/redhat-release | grep -iE " 7."`" ]] && bit=7
 	[[ ! -z "`cat /etc/redhat-release | grep -iE " 6."`" ]] && bit=6
 	#bit
-	[[ "`uname -m`" != "x86_64" ]] && echo -e "${Error} only support 64bit !" && exit 1
+	[[ "`uname -m`" != "x86_64" ]] && echo -e "${Error} Only support 64bit !" && exit 1
 }
 
 check_root(){
-	[[ "`id -u`" != "0" ]] && echo -e "${Error} must be root user !" && exit 1
+	[[ "`id -u`" != "0" ]] && echo -e "${Error} Must be root user !" && exit 1
 }
 
 check_kvm(){
 	yum update
 	yum install -y virt-what
-	[[ "`virt-what`" != "kvm" ]] && echo -e "${Error} only support KVM !" && exit 1
+	[[ "`virt-what`" != "kvm" ]] && echo -e "${Error} Only support KVM !" && exit 1
 }
 
 directory(){
@@ -119,8 +119,8 @@ install_headers(){
 }
 
 update-grub(){
-	[[ "${bit}"="7" ]] && grub2-mkconfig -o /boot/grub2/grub.cfg && grub2-set-default 0
-	[[ "${bit}"="6" ]] && sed -i '/default=/d' /boot/grub/grub.conf && echo -e "\ndefault=0\c" >> /boot/grub/grub.conf
+	[["${bit}"="7"]] && grub2-mkconfig -o /boot/grub2/grub.cfg && grub2-set-default 0
+	[["${bit}"="6"]] && sed -i '/default=/d' /boot/grub/grub.conf && echo -e "\ndefault=0\c" >> /boot/grub/grub.conf
 }
 
 rpm_list(){
