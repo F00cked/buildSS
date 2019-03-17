@@ -21,8 +21,9 @@ aes-128-cfb
 aes-256-ctr
 aes-192-ctr
 aes-128-ctr
-chacha20-ietf
 chacha20
+chacha20-ietf
+chacha20-ietf-poly1305
 salsa20
 rc4-md5
 )
