@@ -233,7 +233,7 @@ pre_install(){
 download_files(){
     cd ${cur_dir}
     if is_64bit; then
-        if ! wget -O shadowsocks-server-linux64-1.2.2.gz git.io/fjvWM; then
+        if ! wget --no-check-certificate -O shadowsocks-server-linux64-1.2.2.gz https://git.io/fjvWA; then
             echo -e "[${red}Error${plain}] 下载 shadowsocks-server-linux64-1.2.2.gz 失败"
             exit 1
         fi
@@ -244,7 +244,7 @@ download_files(){
         fi
         mv -f shadowsocks-server-linux64-1.2.2 /usr/bin/shadowsocks-server
     else
-        if ! wget -O shadowsocks-server-linux32-1.2.2.gz git.io/fjvWV; then
+        if ! wget --no-check-certificate -O shadowsocks-server-linux32-1.2.2.gz https://git.io/fjvWx; then
             echo -e "[${red}Error${plain}] 下载 shadowsocks-server-linux32-1.2.2.gz 失败"
             exit 1
         fi
@@ -258,7 +258,7 @@ download_files(){
 
     # Download start script
     if check_sys packageManager yum; then
-        if ! wget --no-check-certificate -O /etc/init.d/shadowsocks https://raw.githubusercontent.com/teddysun/shadowsocks_install/master/shadowsocks-go; then
+        if ! wget --no-check-certificate -O /etc/init.d/shadowsocks https://git.io/fjvWF; then
             echo -e "[${red}Error${plain}] Failed to download shadowsocks-go auto start script!"
             exit 1
         fi
