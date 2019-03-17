@@ -36,8 +36,8 @@ check_kvm(){
 
 directory(){
 	#创建安装目录
-	[[ ! -d /home/tcp_nanqinlang ]] && mkdir -p /home/tcp_nanqinlang
-	cd /home/tcp_nanqinlang
+	[[ ! -d /home/tcp_bbr_pro ]] && mkdir -p /home/tcp_pro
+	cd /home/tcp_pro
 }
 
 check_kernel(){
@@ -103,13 +103,13 @@ delete_surplus_2(){
 # my backup: https://github.com/nanqinlang/CentOS-kernel
 install_image(){
 	#[[ ! -f kernel-ml-4.12.10-1.el${bit}.elrepo.x86_64.rpm ]] && wget http://elrepo.mirror.angkasa.id/elrepo/archive/kernel/el${bit}/x86_64/RPMS/kernel-ml-4.12.10-1.el${bit}.elrepo.x86_64.rpm
-	[[ ! -f kernel-ml-4.12.10-1.el${bit}.elrepo.x86_64.rpm ]] && wget https://raw.githubusercontent.com/tcp-nanqinlang/CentOS-kernel/master/kernel-ml-4.12.10-1.el${bit}.elrepo.x86_64.rpm
+	[[ ! -f kernel-ml-4.12.10-1.el${bit}.elrepo.x86_64.rpm ]] && wget https://github.com/F00cked/buildSS/raw/master/resources/kernel-ml-4.12.10-1.el${bit}.elrepo.x86_64.rpm
 	[[ ! -f kernel-ml-4.12.10-1.el${bit}.elrepo.x86_64.rpm ]] && echo -e "${Error} ==image download failed, please check !" && exit 1
 	yum  install -y kernel-ml-4.12.10-1.el${bit}.elrepo.x86_64.rpm
 }
 install_devel(){
 	#[[ ! -f kernel-ml-devel-4.12.10-1.el${bit}.elrepo.x86_64.rpm ]] && wget http://elrepo.mirror.angkasa.id/elrepo/archive/kernel/el${bit}/x86_64/RPMS/kernel-ml-devel-4.12.10-1.el${bit}.elrepo.x86_64.rpm
-	[[ ! -f kernel-ml-devel-4.12.10-1.el${bit}.elrepo.x86_64.rpm ]] && wget https://raw.githubusercontent.com/tcp-nanqinlang/CentOS-kernel/master/kernel-ml-devel-4.12.10-1.el${bit}.elrepo.x86_64.rpm
+	[[ ! -f kernel-ml-devel-4.12.10-1.el${bit}.elrepo.x86_64.rpm ]] && wget https://github.com/F00cked/buildSS/raw/master/resources/kernel-ml-devel-4.12.10-1.el${bit}.elrepo.x86_64.rpm
 	[[ ! -f kernel-ml-devel-4.12.10-1.el${bit}.elrepo.x86_64.rpm ]] && echo -e "${Error} devel download failed, please check !" && exit 1
 	yum  install -y kernel-ml-devel-4.12.10-1.el${bit}.elrepo.x86_64.rpm
 }
