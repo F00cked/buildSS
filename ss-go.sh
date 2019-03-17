@@ -5,8 +5,7 @@ export PATH
 clear
 echo
 echo "#############################################################"
-echo "# One click Install Shadowsocks-go server                   #"
-echo "# Intro: https://teddysun.com/392.html                      #"
+echo "# 一键安装 Shadowsocks-go 服务                                #"
 echo "# Author: no0ne                                             #"
 echo "# Github: https://github.com/shadowsocks/shadowsocks-go     #"
 echo "#############################################################"
@@ -43,7 +42,7 @@ yellow='\033[0;33m'
 plain='\033[0m'
 
 # 确保拥有 root 权限运行
-[[ $EUID -ne 0 ]] && echo -e "[${red}Error${plain}] 该脚本必须使用 root 权限运行!" && exit 1
+[[ $EUID -ne 0 ]] && echo -e "[${red}错误${plain}] 该脚本必须使用 root 权限运行!" && exit 1
 
 # 检查系统发行版
 check_sys(){
@@ -154,7 +153,7 @@ get_char(){
 # Pre-installation settings
 pre_install(){
     if ! check_sys packageManager yum && ! check_sys packageManager apt; then
-        echo -e "$[{red}Error${plain}] Your OS is not supported. please change OS to CentOS/Debian/Ubuntu and try again."
+        echo -e "$[{red}错误${plain}] 你的操作系统不被支持. 请使用 CentOS/Debian/Ubuntu，然后重试!"
         exit 1
     fi
     # 配置 Shadowsocks-go 密码
@@ -170,8 +169,8 @@ pre_install(){
     while true
     do
     dport=$(shuf -i 9000-19999 -n 1)
-    echo -e "Please enter a port for shadowsocks-go [1-65535]"
-    read -p "(Default port: ${dport}):" shadowsocksport
+    echo -e "请给 shadowsocks-go 服务设置一个端口号 [1-65535]"
+    read -p "(默认端口号: ${dport}):" shadowsocksport
     [ -z "${shadowsocksport}" ] && shadowsocksport=${dport}
     expr ${shadowsocksport} + 1 &>/dev/null
     if [ $? -eq 0 ]; then
@@ -184,7 +183,7 @@ pre_install(){
             break
         fi
     fi
-    echo -e "[${red}Error${plain}] 请输入你想要使用的端口号 [1-65535]"
+    echo -e "[${red}错误${plain}] 请输入你想要使用的端口号 [1-65535]"
     done
 
     # 设置加密算法配置参数
@@ -199,7 +198,7 @@ pre_install(){
     [ -z "$pick" ] && pick=1
     expr ${pick} + 1 &>/dev/null
     if [ $? -ne 0 ]; then
-        echo -e "[${red}Error${plain}] 请输入数字"
+        echo -e "[${red}错误${plain}] 请输入数字"
         continue
     fi
     if [[ "$pick" -lt 1 || "$pick" -gt ${#ciphers[@]} ]]; then
@@ -234,23 +233,23 @@ download_files(){
     cd ${cur_dir}
     if is_64bit; then
         if ! wget --no-check-certificate -O shadowsocks-server-linux64-1.2.2.gz https://git.io/fjvWA; then
-            echo -e "[${red}Error${plain}] 下载 shadowsocks-server-linux64-1.2.2.gz 失败"
+            echo -e "[${red}错误${plain}] 下载 shadowsocks-server-linux64-1.2.2.gz 失败"
             exit 1
         fi
         gzip -d shadowsocks-server-linux64-1.2.2.gz
         if [ $? -ne 0 ]; then
-            echo -e "[${red}Error${plain}] 解压 shadowsocks-server-linux64-1.2.2.gz 失败"
+            echo -e "[${red}错误${plain}] 解压 shadowsocks-server-linux64-1.2.2.gz 失败"
             exit 1
         fi
         mv -f shadowsocks-server-linux64-1.2.2 /usr/bin/shadowsocks-server
     else
         if ! wget --no-check-certificate -O shadowsocks-server-linux32-1.2.2.gz https://git.io/fjvWx; then
-            echo -e "[${red}Error${plain}] 下载 shadowsocks-server-linux32-1.2.2.gz 失败"
+            echo -e "[${red}错误${plain}] 下载 shadowsocks-server-linux32-1.2.2.gz 失败"
             exit 1
         fi
         gzip -d shadowsocks-server-linux32-1.2.2.gz
         if [ $? -ne 0 ]; then
-            echo -e "[${red}Error${plain}] 解压 shadowsocks-server-linux32-1.2.2.gz 失败"
+            echo -e "[${red}错误${plain}] 解压 shadowsocks-server-linux32-1.2.2.gz 失败"
             exit 1
         fi
         mv -f shadowsocks-server-linux32-1.2.2 /usr/bin/shadowsocks-server
@@ -259,12 +258,12 @@ download_files(){
     # Download start script
     if check_sys packageManager yum; then
         if ! wget --no-check-certificate -O /etc/init.d/shadowsocks https://git.io/fjvle; then
-            echo -e "[${red}Error${plain}] 下载 shadowsocks-go 自动脚本失败!"
+            echo -e "[${red}错误${plain}] 下载 shadowsocks-go 自动脚本失败!"
             exit 1
         fi
     elif check_sys packageManager apt; then
         if ! wget --no-check-certificate -O /etc/init.d/shadowsocks https://git.io/fjvWp; then
-            echo -e "[${red}Error${plain}] 下载 shadowsocks-go 自动脚本失败!"
+            echo -e "[${red}错误${plain}] 下载 shadowsocks-go 自动脚本失败!"
             exit 1
         fi
     fi
@@ -291,7 +290,7 @@ EOF
 
 # 配置防火墙
 firewall_set(){
-    echo -e "[${green}Info${plain}] 开始配置防火墙!"
+    echo -e "[${green}信息${plain}] 开始配置防火墙!"
     if centosversion 6; then
         /etc/init.d/iptables status > /dev/null 2>&1
         if [ $? -eq 0 ]; then
@@ -302,10 +301,10 @@ firewall_set(){
                 /etc/init.d/iptables save
                 /etc/init.d/iptables restart
             else
-                echo -e "[${green}Info${plain}] 端口 ${shadowsocksport} 已启动."
+                echo -e "[${green}信息${plain}] 端口 ${shadowsocksport} 已启动."
             fi
         else
-            echo -e "[${yellow}Warning${plain}] 防火墙似乎没有启动或者没有安装, 请手动检查并启动."
+            echo -e "[${yellow}警告${plain}] 防火墙似乎没有启动或者没有安装, 请手动检查并启动."
         fi
     elif centosversion 7; then
         systemctl status firewalld > /dev/null 2>&1
@@ -315,7 +314,7 @@ firewall_set(){
             firewall-cmd --permanent --zone=${default_zone} --add-port=${shadowsocksport}/udp
             firewall-cmd --reload
         else
-            echo -e "[${yellow}Warning${plain}] 防火墙似乎没有启动或者没有安装,请手动添加端口 ${shadowsocksport} 到防火墙规则配置"
+            echo -e "[${yellow}警告${plain}] 防火墙似乎没有启动或者没有安装,请手动添加端口 ${shadowsocksport} 到防火墙规则配置"
         fi
     fi
     echo -e "[${green}Info${plain}] 防火墙配置完成!"
@@ -405,7 +404,7 @@ case "$action" in
         ${action}_shadowsocks_go
         ;;
     *)
-        echo "Arguments error! [${action}]"
-        echo "Usage: `basename $0` [install|uninstall]"
+        echo "错误对象! [${action}]"
+        echo "用法: `basename $0` [install|uninstall]"
         ;;
 esac
