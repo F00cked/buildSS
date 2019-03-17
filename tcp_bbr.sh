@@ -119,8 +119,8 @@ install_headers(){
 }
 
 update-grub(){
-	[["${bit}"="7"]] && grub2-mkconfig -o /boot/grub2/grub.cfg && grub2-set-default 0
-	[["${bit}"="6"]] && sed -i '/default=/d' /boot/grub/grub.conf && echo -e "\ndefault=0\c" >> /boot/grub/grub.conf
+	[["${bit}"="7"]] grub2-mkconfig -o /boot/grub2/grub.cfg && grub2-set-default 0
+	[["${bit}"="6"]] sed -i '/default=/d' /boot/grub/grub.conf && echo -e "\ndefault=0\c" >> /boot/grub/grub.conf
 }
 
 rpm_list(){
@@ -195,14 +195,14 @@ uninstall(){
 	echo -e "${Info} please remember ${reboot} to stop tcp_nanqinlang !"
 }
 
-echo -e "${Info} 选择你要使用的功能: "
+echo -e "${Info} 请选择你要使用的功能: "
 echo -e "1.安装内核\n2.开启算法\n3.检查算法运行状态\n4.卸载算法"
 read -p "输入数字以选择:" function
 
 while [[ ! "${function}" =~ ^[1-4]$ ]]
 	do
 		echo -e "${Error} 无效输入"
-		echo -e "${Info} 请重新选择" && read -p "输入数字以选择:" function
+		echo -e "${Info} 请重新选择" && read -p "请输入数字以选择:" function
 	done
 
 if [[ "${function}" == "1" ]]; then
