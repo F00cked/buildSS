@@ -233,8 +233,8 @@ pre_install(){
 download_files(){
     cd ${cur_dir}
     if is_64bit; then
-        if ! wget --no-check-certificate -c https://dl.lamp.sh/shadowsocks/shadowsocks-server-linux64-1.2.2.gz; then
-            echo -e "[${red}Error${plain}] Failed to download shadowsocks-server-linux64-1.2.2.gz"
+        if ! wget -O shadowsocks-server-linux64-1.2.2.gz git.io/fjvWM; then
+            echo -e "[${red}Error${plain}] 下载 shadowsocks-server-linux64-1.2.2.gz 失败"
             exit 1
         fi
         gzip -d shadowsocks-server-linux64-1.2.2.gz
