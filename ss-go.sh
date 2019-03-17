@@ -15,15 +15,14 @@ echo
 cur_dir=`pwd`
 # 加密算法支持列表
 ciphers=(
-aes-128-cfb
-aes-192-cfb
 aes-256-cfb
-aes-128-ctr
-aes-192-ctr
+aes-192-cfb
+aes-128-cfb
 aes-256-ctr
-chacha20
+aes-192-ctr
+aes-128-ctr
 chacha20-ietf
-salsa20
+chacha20
 rc4-md5
 )
 # Color
