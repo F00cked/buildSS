@@ -1,19 +1,27 @@
 #!/usr/bin/env bash
 PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
+#=================================================================#
+#   System Required:  CentOS, Debian, Ubuntu                      #
+#   Description: One click Install Shadowsocks-go server          #
+#   Author: Teddysun <i@teddysun.com>                             #
+#   Thanks: @cyfdecyf <https://twitter.com/cyfdecyf>              #
+#   Intro:  https://teddysun.com/392.html                         #
+#==================================================================
 
 clear
 echo
 echo "#############################################################"
-echo "# 一键安装 Shadowsocks-go 服务                                #"
-echo "# Author: no0ne                                             #"
+echo "# One click Install Shadowsocks-go server                   #"
+echo "# Intro: https://teddysun.com/392.html                      #"
+echo "# Author: Teddysun <i@teddysun.com>                         #"
 echo "# Github: https://github.com/shadowsocks/shadowsocks-go     #"
 echo "#############################################################"
 echo
 
-# 获取当前路径
+# Current folder
 cur_dir=`pwd`
-# 加密算法支持列表
+# Stream Ciphers
 ciphers=(
 aes-256-cfb
 aes-192-cfb
@@ -32,11 +40,10 @@ green='\033[0;32m'
 yellow='\033[0;33m'
 plain='\033[0m'
 
-# 确保拥有 root 权限运行
-
+# Make sure only root can run our script
 [[ $EUID -ne 0 ]] && echo -e "[${red}Error${plain}] This script must be run as root!" && exit 1
 
-# 检查系统发行版
+#Check system
 check_sys(){
     local checkType=$1
     local value=$2
@@ -82,7 +89,7 @@ check_sys(){
     fi
 }
 
-# 获取系统版本号
+# Get version
 getversion(){
     if [[ -s /etc/redhat-release ]]; then
         grep -oE  "[0-9.]+" /etc/redhat-release
@@ -91,7 +98,7 @@ getversion(){
     fi
 }
 
-# CentOS
+# CentOS version
 centosversion(){
     if check_sys sysRelease centos; then
         local code=$1
@@ -107,7 +114,7 @@ centosversion(){
     fi
 }
 
-# 检测系统位数
+# is 64bit or not
 is_64bit(){
     if [ `getconf WORD_BIT` = '32' ] && [ `getconf LONG_BIT` = '64' ] ; then
         return 0
@@ -116,7 +123,7 @@ is_64bit(){
     fi
 }
 
-# 关闭 Selinux
+# Disable selinux
 disable_selinux(){
     if [ -s /etc/selinux/config ] && grep 'SELINUX=enforcing' /etc/selinux/config; then
         sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
@@ -124,7 +131,6 @@ disable_selinux(){
     fi
 }
 
-# 获取当前 IP 地址
 get_ip(){
     local IP=$( ip addr | egrep -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | egrep -v "^192\.168|^172\.1[6-9]\.|^172\.2[0-9]\.|^172\.3[0-2]\.|^10\.|^127\.|^255\.|^0\." | head -n 1 )
     [ -z ${IP} ] && IP=$( wget -qO- -t1 -T2 ipv4.icanhazip.com )
@@ -145,23 +151,23 @@ get_char(){
 # Pre-installation settings
 pre_install(){
     if ! check_sys packageManager yum && ! check_sys packageManager apt; then
-        echo -e "$[{red}错误${plain}] 你的操作系统不被支持. 请使用 CentOS/Debian/Ubuntu，然后重试!"
+        echo -e "$[{red}Error${plain}] Your OS is not supported. please change OS to CentOS/Debian/Ubuntu and try again."
         exit 1
     fi
-    # 配置 Shadowsocks-go 密码
-    echo "请给 Shadowsocks-go 服务设置一个密码:"
-    read -p "(Default password: 1pgZ{Pi]fpEC3Q):" shadowsockspwd
-    [ -z "${shadowsockspwd}" ] && shadowsockspwd="1pgZ{Pi)fpEC3Q"
+    # Set shadowsocks-go config password
+    echo "Please enter password for shadowsocks-go:"
+    read -p "(Default password: teddysun.com):" shadowsockspwd
+    [ -z "${shadowsockspwd}" ] && shadowsockspwd="teddysun.com"
     echo
     echo "---------------------------"
     echo "password = ${shadowsockspwd}"
     echo "---------------------------"
     echo
-    # 配置 Shadowsocks-go 服务端口
+    # Set shadowsocks-go config port
     while true
     do
     dport=$(shuf -i 9000-19999 -n 1)
-    echo -e "请给 Shadowsocks-go 服务设置一个端口号 [1-65535]"
+    echo -e "Please enter a port for shadowsocks-go [1-65535]"
     read -p "(Default port: ${dport}):" shadowsocksport
     [ -z "${shadowsocksport}" ] && shadowsocksport=${dport}
     expr ${shadowsocksport} + 1 &>/dev/null
@@ -175,26 +181,26 @@ pre_install(){
             break
         fi
     fi
-    echo -e "[${red}错误${plain}] 请输入你想要使用的端口号 [1-65535]"
+    echo -e "[${red}Error${plain}] Please enter a correct number [1-65535]"
     done
 
-    # 设置加密算法配置参数
+    # Set shadowsocks config stream ciphers
     while true
     do
-    echo -e "请输入你想要要的加密算法:"
+    echo -e "Please select stream cipher for shadowsocks-go:"
     for ((i=1;i<=${#ciphers[@]};i++ )); do
         hint="${ciphers[$i-1]}"
         echo -e "${green}${i}${plain}) ${hint}"
     done
-    read -p "你选择加密算法为(默认: ${ciphers[0]}):" pick
+    read -p "Which cipher you'd select(Default: ${ciphers[0]}):" pick
     [ -z "$pick" ] && pick=1
     expr ${pick} + 1 &>/dev/null
     if [ $? -ne 0 ]; then
-        echo -e "[${red}错误${plain}] 请输入数字"
+        echo -e "[${red}Error${plain}] Please enter a number"
         continue
     fi
     if [[ "$pick" -lt 1 || "$pick" -gt ${#ciphers[@]} ]]; then
-        echo -e "[${red}Error${plain}] 请输入数字，从 1 到 ${#ciphers[@]} 选择"
+        echo -e "[${red}Error${plain}] Please enter a number between 1 and ${#ciphers[@]}"
         continue
     fi
     shadowsockscipher=${ciphers[$pick-1]}
@@ -207,9 +213,9 @@ pre_install(){
     done
 
     echo
-    echo "请按下任意键开始安装，想要终止安装请按下 Ctrl+C。"
+    echo "Press any key to start...or Press Ctrl+C to cancel"
     char=`get_char`
-    #安装 necessary 依赖
+    #Install necessary dependencies
     if check_sys packageManager yum; then
         yum install -y wget unzip gzip curl nss
     elif check_sys packageManager apt; then
@@ -220,28 +226,28 @@ pre_install(){
 
 }
 
-# 下载 Shadowsocks-go
+# Download shadowsocks-go
 download_files(){
     cd ${cur_dir}
     if is_64bit; then
-        if ! wget --no-check-certificate -c https://github.com/F00cked/buildSS/raw/master/resources/shadowsocks-server-linux64-1.2.2.gz; then
-            echo -e "[${red}错误${plain}] 下载 shadowsocks-server-linux64-1.2.2.gz 失败"
+        if ! wget --no-check-certificate -c https://dl.lamp.sh/shadowsocks/shadowsocks-server-linux64-1.2.2.gz; then
+            echo -e "[${red}Error${plain}] Failed to download shadowsocks-server-linux64-1.2.2.gz"
             exit 1
         fi
         gzip -d shadowsocks-server-linux64-1.2.2.gz
         if [ $? -ne 0 ]; then
-            echo -e "[${red}错误${plain}] 解压 shadowsocks-server-linux64-1.2.2.gz 失败"
+            echo -e "[${red}Error${plain}] Decompress shadowsocks-server-linux64-1.2.2.gz failed"
             exit 1
         fi
         mv -f shadowsocks-server-linux64-1.2.2 /usr/bin/shadowsocks-server
     else
-        if ! wget --no-check-certificate -c https://github.com/F00cked/buildSS/raw/master/resources/shadowsocks-server-linux32-1.2.2.gz; then
-            echo -e "[${red}错误${plain}] 下载 shadowsocks-server-linux32-1.2.2.gz 失败"
+        if ! wget --no-check-certificate -c https://dl.lamp.sh/shadowsocks/shadowsocks-server-linux32-1.2.2.gz; then
+            echo -e "[${red}Error${plain}] Failed to download shadowsocks-server-linux32-1.2.2.gz"
             exit 1
         fi
         gzip -d shadowsocks-server-linux32-1.2.2.gz
         if [ $? -ne 0 ]; then
-            echo -e "[${red}错误${plain}] 解压 shadowsocks-server-linux32-1.2.2.gz 失败"
+            echo -e "[${red}Error${plain}] Decompress shadowsocks-server-linux32-1.2.2.gz failed"
             exit 1
         fi
         mv -f shadowsocks-server-linux32-1.2.2 /usr/bin/shadowsocks-server
@@ -249,13 +255,13 @@ download_files(){
 
     # Download start script
     if check_sys packageManager yum; then
-        if ! wget --no-check-certificate -O /etc/init.d/shadowsocks https://git.io/fjvle; then
-            echo -e "[${red}错误${plain}] 下载 shadowsocks-go 自动脚本失败!"
+        if ! wget --no-check-certificate -O /etc/init.d/shadowsocks https://raw.githubusercontent.com/teddysun/shadowsocks_install/master/shadowsocks-go; then
+            echo -e "[${red}Error${plain}] Failed to download shadowsocks-go auto start script!"
             exit 1
         fi
     elif check_sys packageManager apt; then
-        if ! wget --no-check-certificate -O /etc/init.d/shadowsocks https://git.io/fjvWp; then
-            echo -e "[${red}错误${plain}] 下载 shadowsocks-go 自动脚本失败!"
+        if ! wget --no-check-certificate -O /etc/init.d/shadowsocks https://raw.githubusercontent.com/teddysun/shadowsocks_install/master/shadowsocks-go-debian; then
+            echo -e "[${red}Error${plain}] Failed to download shadowsocks-go auto start script!"
             exit 1
         fi
     fi
@@ -269,21 +275,18 @@ config_shadowsocks(){
     cat > /etc/shadowsocks/config.json<<-EOF
 {
     "server":"0.0.0.0",
-    "server_ipv6":"::",
-    "dns_ipv6": true,
     "server_port":${shadowsocksport},
     "local_port":1080,
     "password":"${shadowsockspwd}",
     "method":"${shadowsockscipher}",
-    "timeout":300,
-    "mode":"tcp_and_udp"
+    "timeout":300
 }
 EOF
 }
 
-# 配置防火墙
+# Firewall set
 firewall_set(){
-    echo -e "[${green}信息${plain}] 开始配置防火墙!"
+    echo -e "[${green}Info${plain}] firewall set start..."
     if centosversion 6; then
         /etc/init.d/iptables status > /dev/null 2>&1
         if [ $? -eq 0 ]; then
@@ -294,10 +297,10 @@ firewall_set(){
                 /etc/init.d/iptables save
                 /etc/init.d/iptables restart
             else
-                echo -e "[${green}信息${plain}] 端口 ${shadowsocksport} 已启动."
+                echo -e "[${green}Info${plain}] port ${shadowsocksport} has been set up."
             fi
         else
-            echo -e "[${yellow}警告${plain}] 防火墙似乎没有启动或者没有安装, 请手动检查并启动."
+            echo -e "[${yellow}Warning${plain}] iptables looks like shutdown or not installed, please manually set it if necessary."
         fi
     elif centosversion 7; then
         systemctl status firewalld > /dev/null 2>&1
@@ -307,17 +310,17 @@ firewall_set(){
             firewall-cmd --permanent --zone=${default_zone} --add-port=${shadowsocksport}/udp
             firewall-cmd --reload
         else
-            echo -e "[${yellow}警告${plain}] 防火墙似乎没有启动或者没有安装,请手动添加端口 ${shadowsocksport} 到防火墙规则配置"
+            echo -e "[${yellow}Warning${plain}] firewalld looks like not running or not installed, please enable port ${shadowsocksport} manually if necessary."
         fi
     fi
-    echo -e "[${green}信息${plain}] 防火墙配置完成!"
+    echo -e "[${green}Info${plain}] firewall set completed..."
 }
 
-# 安装 Shadowsocks-go
+# Install Shadowsocks-go
 install(){
 
     if [ -f /usr/bin/shadowsocks-server ]; then
-        echo "Shadowsocks-go 服务安装成功!"
+        echo "Shadowsocks-go server install success!"
         chmod +x /usr/bin/shadowsocks-server
         chmod +x /etc/init.d/shadowsocks
 
@@ -330,29 +333,32 @@ install(){
 
         /etc/init.d/shadowsocks start
         if [ $? -ne 0 ]; then
-            echo -e "[${red}错误${plain}] Shadowsocks-go 服务安装失败!"
+            echo -e "[${red}Error${plain}] Shadowsocks-go server start failed!"
         fi
     else
         echo
-        echo -e "[${red}错误${plain}] Shadowsocks-go 服务安装失败!"
+        echo -e "[${red}Error${plain}] Shadowsocks-go server install failed!"
         exit 1
     fi
 
     clear
     echo
-    echo -e "恭喜, Shadowsocks-go 服务安装完成!"
-    echo -e "服务器地址        : \033[41;37m $(get_ip) \033[0m"
-    echo -e "服务端口号        : \033[41;37m ${shadowsocksport} \033[0m"
-    echo -e "客户端密码        : \033[41;37m ${shadowsockspwd} \033[0m"
-    echo -e "客户端加密        : \033[41;37m ${shadowsockscipher} \033[0m"
+    echo -e "Congratulations, Shadowsocks-go server install completed!"
+    echo -e "Your Server IP        : \033[41;37m $(get_ip) \033[0m"
+    echo -e "Your Server Port      : \033[41;37m ${shadowsocksport} \033[0m"
+    echo -e "Your Password         : \033[41;37m ${shadowsockspwd} \033[0m"
+    echo -e "Your Encryption Method: \033[41;37m ${shadowsockscipher} \033[0m"
+    echo
+    echo "Welcome to visit:https://teddysun.com/392.html"
+    echo "Enjoy it!"
     echo
 }
 
-# 卸载 Shadowsocks-go
+# Uninstall Shadowsocks-go
 uninstall_shadowsocks_go(){
-    printf "你确定卸载 Shadowsocks-go 服务? (y/n) "
+    printf "Are you sure uninstall shadowsocks-go? (y/n) "
     printf "\n"
-    read -p "(默认: n):" answer
+    read -p "(Default: n):" answer
     [ -z ${answer} ] && answer="n"
     if [ "${answer}" == "y" ] || [ "${answer}" == "Y" ]; then
         ps -ef | grep -v grep | grep -i "shadowsocks-server" > /dev/null 2>&1
@@ -369,15 +375,15 @@ uninstall_shadowsocks_go(){
         # delete shadowsocks
         rm -f /etc/init.d/shadowsocks
         rm -f /usr/bin/shadowsocks-server
-        echo "卸载 Shadowsocks-go 成功!"
+        echo "Shadowsocks-go uninstall success!"
     else
         echo
-        echo "已取消卸载, 配置没有任何变化!"
+        echo "Uninstall cancelled, nothing to do..."
         echo
     fi
 }
 
-# 安装 Shadowsocks-go 步骤
+# Install Shadowsocks-go
 install_shadowsocks_go(){
     disable_selinux
     pre_install
@@ -389,7 +395,7 @@ install_shadowsocks_go(){
     install
 }
 
-# 初始化步骤
+# Initialization step
 action=$1
 [ -z $1 ] && action=install
 case "$action" in
@@ -397,7 +403,7 @@ case "$action" in
         ${action}_shadowsocks_go
         ;;
     *)
-        echo "错误对象! [${action}]"
-        echo "用法: `basename $0` [install|uninstall]"
+        echo "Arguments error! [${action}]"
+        echo "Usage: `basename $0` [install|uninstall]"
         ;;
 esac
