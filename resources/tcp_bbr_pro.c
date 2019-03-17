@@ -973,4 +973,4 @@ MODULE_AUTHOR("Yuchung Cheng <ycheng@google.com>");
 MODULE_AUTHOR("Soheil Hassas Yeganeh <soheil@google.com>");
 MODULE_LICENSE("Dual BSD/GPL");
 MODULE_DESCRIPTION("TCP BBR (Bottleneck Bandwidth and RTT)");
-MODULE_AUTHOR("Nanqinlang <https://sometimesnaive.org>");
+MODULE_AUTHOR("no0ne (Nothing))");
