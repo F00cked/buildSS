@@ -12,12 +12,12 @@
 # Description:       Start or stop the Shadowsocks-go server
 ### END INIT INFO
 
-# Author: Teddysun <i@teddysun.com>
+# Author: no0ne
 
 # Source function library
 . /etc/rc.d/init.d/functions
 
-# Check that networking is up.
+# 验证网络已经启动
 [ ${NETWORKING} ="yes" ] || exit 0
 
 NAME=Shadowsocks-go
