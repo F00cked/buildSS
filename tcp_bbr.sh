@@ -119,8 +119,8 @@ install_headers(){
 }
 
 update-grub(){
-	[[ "${bit}" = "7" ]] && grub2-mkconfig -o /boot/grub2/grub.cfg && grub2-set-default 0
-	[[ "${bit}" = "6" ]] && sed -i '/default=/d' /boot/grub/grub.conf && echo -e "\ndefault=0\c" >> /boot/grub/grub.conf
+	[[ "${bit}"="7" ]] && grub2-mkconfig -o /boot/grub2/grub.cfg && grub2-set-default 0
+	[[ "${bit}"="6" ]] && sed -i '/default=/d' /boot/grub/grub.conf && echo -e "\ndefault=0\c" >> /boot/grub/grub.conf
 }
 
 rpm_list(){
