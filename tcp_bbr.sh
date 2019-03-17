@@ -10,7 +10,8 @@ echo -e "${Green_font}
 # Author:   no0ne
 # Blog:     https://sometimesnaive.org
 # Github:   https://github.com/nanqinlang
-#======================================================${Font_suffix}"
+#======================================================
+${Font_suffix}"
 
 check_system(){
 	#sort
