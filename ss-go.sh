@@ -21,19 +21,10 @@ aes-256-cfb
 aes-128-ctr
 aes-192-ctr
 aes-256-ctr
-aes-128-gcm
-aes-192-gcm
-aes-256-gcm
-camellia-128-cfb
-camellia-192-cfb
-camellia-256-cfb
 chacha20
 chacha20-ietf
-chacha20-ietf-poly1305
-xchacha20-ietf-poly1305
 salsa20
 rc4-md5
-bf-ctr
 )
 # Color
 red='\033[0;31m'
@@ -360,7 +351,7 @@ install(){
 uninstall_shadowsocks_go(){
     printf "你确定卸载 Shadowsocks-go 服务? (y/n) "
     printf "\n"
-    read -p "(Default: n):" answer
+    read -p "(默认: n):" answer
     [ -z ${answer} ] && answer="n"
     if [ "${answer}" == "y" ] || [ "${answer}" == "Y" ]; then
         ps -ef | grep -v grep | grep -i "shadowsocks-server" > /dev/null 2>&1
