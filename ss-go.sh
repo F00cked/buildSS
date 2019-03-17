@@ -158,7 +158,7 @@ pre_install(){
     fi
     # 配置 Shadowsocks-go 密码
     echo "请给 Shadowsocks-go 服务设置一个密码:"
-    read -p "(默认密码: 1pgZ{Pi)fpEC3Q):" shadowsockspwd
+    read -p "(默认密码: 1pgZ{Pi]fpEC3Q):" shadowsockspwd
     [ -z "${shadowsockspwd}" ] && shadowsockspwd="1pgZ{Pi)fpEC3Q"
     echo
     echo "---------------------------"
@@ -202,7 +202,7 @@ pre_install(){
         continue
     fi
     if [[ "$pick" -lt 1 || "$pick" -gt ${#ciphers[@]} ]]; then
-        echo -e "[${red}Error${plain}] 请输入数字，从 1 到 ${#ciphers[@]}"
+        echo -e "[${red}Error${plain}] 请输入数字，从 1 到 ${#ciphers[@]} 选择"
         continue
     fi
     shadowsockscipher=${ciphers[$pick-1]}
@@ -217,7 +217,7 @@ pre_install(){
     echo
     echo "请按下任意键开始安装，想要终止安装请按下 Ctrl+C。"
     char=`get_char`
-    #Install necessary dependencies
+    #安装 necessary 依赖
     if check_sys packageManager yum; then
         yum install -y wget unzip gzip curl nss
     elif check_sys packageManager apt; then
@@ -276,7 +276,8 @@ config_shadowsocks(){
     fi
     cat > /etc/shadowsocks/config.json<<-EOF
 {
-    "server":["[::0]","0.0.0.0"],
+    "server":"0.0.0.0",
+    "server_ipv6":"::",
     "dns_ipv6": true,
     "server_port":${shadowsocksport},
     "local_port":1080,
@@ -317,7 +318,7 @@ firewall_set(){
             echo -e "[${yellow}警告${plain}] 防火墙似乎没有启动或者没有安装,请手动添加端口 ${shadowsocksport} 到防火墙规则配置"
         fi
     fi
-    echo -e "[${green}Info${plain}] 防火墙配置完成!"
+    echo -e "[${green}信息${plain}] 防火墙配置完成!"
 }
 
 # 安装 Shadowsocks-go
@@ -337,11 +338,11 @@ install(){
 
         /etc/init.d/shadowsocks start
         if [ $? -ne 0 ]; then
-            echo -e "[${red}Error${plain}] Shadowsocks-go 服务安装失败!"
+            echo -e "[${red}错误${plain}] Shadowsocks-go 服务安装失败!"
         fi
     else
         echo
-        echo -e "[${red}Error${plain}] Shadowsocks-go 服务安装失败!"
+        echo -e "[${red}错误${plain}] Shadowsocks-go 服务安装失败!"
         exit 1
     fi
 
@@ -350,8 +351,8 @@ install(){
     echo -e "恭喜, Shadowsocks-go 服务安装完成!"
     echo -e "服务器地址        : \033[41;37m $(get_ip) \033[0m"
     echo -e "服务端口号        : \033[41;37m ${shadowsocksport} \033[0m"
-    echo -e "密码             : \033[41;37m ${shadowsockspwd} \033[0m"
-    echo -e "加密             : \033[41;37m ${shadowsockscipher} \033[0m"
+    echo -e "客户端密码        : \033[41;37m ${shadowsockspwd} \033[0m"
+    echo -e "客户端加密        : \033[41;37m ${shadowsockscipher} \033[0m"
     echo
 }
 
