@@ -258,13 +258,13 @@ download_files(){
 
     # Download start script
     if check_sys packageManager yum; then
-        if ! wget --no-check-certificate -O /etc/init.d/shadowsocks https://git.io/fjvWF; then
-            echo -e "[${red}Error${plain}] Failed to download shadowsocks-go auto start script!"
+        if ! wget --no-check-certificate -O /etc/init.d/shadowsocks https://git.io/fjvle; then
+            echo -e "[${red}Error${plain}] 下载 shadowsocks-go 自动脚本失败!"
             exit 1
         fi
     elif check_sys packageManager apt; then
-        if ! wget --no-check-certificate -O /etc/init.d/shadowsocks https://raw.githubusercontent.com/teddysun/shadowsocks_install/master/shadowsocks-go-debian; then
-            echo -e "[${red}Error${plain}] Failed to download shadowsocks-go auto start script!"
+        if ! wget --no-check-certificate -O /etc/init.d/shadowsocks https://git.io/fjvWp; then
+            echo -e "[${red}Error${plain}] 下载 shadowsocks-go 自动脚本失败!"
             exit 1
         fi
     fi
@@ -277,19 +277,21 @@ config_shadowsocks(){
     fi
     cat > /etc/shadowsocks/config.json<<-EOF
 {
-    "server":"0.0.0.0",
+    "server":["[::0]","0.0.0.0"],
+    "dns_ipv6": true,
     "server_port":${shadowsocksport},
     "local_port":1080,
     "password":"${shadowsockspwd}",
     "method":"${shadowsockscipher}",
-    "timeout":300
+    "timeout":300，
+    "mode":"tcp_and_udp"
 }
 EOF
 }
 
 # 配置防火墙
 firewall_set(){
-    echo -e "[${green}Info${plain}] firewall set start..."
+    echo -e "[${green}Info${plain}] 开始配置防火墙!"
     if centosversion 6; then
         /etc/init.d/iptables status > /dev/null 2>&1
         if [ $? -eq 0 ]; then
@@ -300,10 +302,10 @@ firewall_set(){
                 /etc/init.d/iptables save
                 /etc/init.d/iptables restart
             else
-                echo -e "[${green}Info${plain}] port ${shadowsocksport} has been set up."
+                echo -e "[${green}Info${plain}] 端口 ${shadowsocksport} 已启动."
             fi
         else
-            echo -e "[${yellow}Warning${plain}] iptables looks like shutdown or not installed, please manually set it if necessary."
+            echo -e "[${yellow}Warning${plain}] 防火墙似乎没有启动或者没有安装, 请手动检查并启动."
         fi
     elif centosversion 7; then
         systemctl status firewalld > /dev/null 2>&1
@@ -313,10 +315,10 @@ firewall_set(){
             firewall-cmd --permanent --zone=${default_zone} --add-port=${shadowsocksport}/udp
             firewall-cmd --reload
         else
-            echo -e "[${yellow}Warning${plain}] firewalld looks like not running or not installed, please enable port ${shadowsocksport} manually if necessary."
+            echo -e "[${yellow}Warning${plain}] 防火墙似乎没有启动或者没有安装,请手动添加端口 ${shadowsocksport} 到防火墙规则配置"
         fi
     fi
-    echo -e "[${green}Info${plain}] firewall set completed..."
+    echo -e "[${green}Info${plain}] 防火墙配置完成!"
 }
 
 # 安装 Shadowsocks-go
@@ -356,7 +358,7 @@ install(){
 
 # 卸载 Shadowsocks-go
 uninstall_shadowsocks_go(){
-    printf "Are you sure uninstall shadowsocks-go? (y/n) "
+    printf "你确定卸载 Shadowsocks-go 服务? (y/n) "
     printf "\n"
     read -p "(Default: n):" answer
     [ -z ${answer} ] && answer="n"
@@ -375,10 +377,10 @@ uninstall_shadowsocks_go(){
         # delete shadowsocks
         rm -f /etc/init.d/shadowsocks
         rm -f /usr/bin/shadowsocks-server
-        echo "Shadowsocks-go uninstall success!"
+        echo "卸载 Shadowsocks-go 成功!"
     else
         echo
-        echo "Uninstall cancelled, nothing to do..."
+        echo "已取消卸载, 配置没有任何变化!"
         echo
     fi
 }
