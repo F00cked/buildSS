@@ -229,7 +229,7 @@ pre_install(){
 
 }
 
-# 下载 shadowsocks-go
+# 下载 Shadowsocks-go
 download_files(){
     cd ${cur_dir}
     if is_64bit; then
@@ -239,18 +239,18 @@ download_files(){
         fi
         gzip -d shadowsocks-server-linux64-1.2.2.gz
         if [ $? -ne 0 ]; then
-            echo -e "[${red}Error${plain}] Decompress shadowsocks-server-linux64-1.2.2.gz failed"
+            echo -e "[${red}Error${plain}] 解压 shadowsocks-server-linux64-1.2.2.gz 失败"
             exit 1
         fi
         mv -f shadowsocks-server-linux64-1.2.2 /usr/bin/shadowsocks-server
     else
-        if ! wget --no-check-certificate -c https://dl.lamp.sh/shadowsocks/shadowsocks-server-linux32-1.2.2.gz; then
-            echo -e "[${red}Error${plain}] Failed to download shadowsocks-server-linux32-1.2.2.gz"
+        if ! wget -O shadowsocks-server-linux32-1.2.2.gz git.io/fjvWV; then
+            echo -e "[${red}Error${plain}] 下载 shadowsocks-server-linux32-1.2.2.gz 失败"
             exit 1
         fi
         gzip -d shadowsocks-server-linux32-1.2.2.gz
         if [ $? -ne 0 ]; then
-            echo -e "[${red}Error${plain}] Decompress shadowsocks-server-linux32-1.2.2.gz failed"
+            echo -e "[${red}Error${plain}] 解压 shadowsocks-server-linux32-1.2.2.gz 失败"
             exit 1
         fi
         mv -f shadowsocks-server-linux32-1.2.2 /usr/bin/shadowsocks-server
