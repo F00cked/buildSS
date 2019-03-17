@@ -15,16 +15,16 @@ echo
 cur_dir=`pwd`
 # 加密算法支持列表
 ciphers=(
-aes-128-ctr
-aes-192-cfb
-aes-256-cfb
-aes-128-cfb
-aes-192-ctr
-aes-256-ctr
-chacha20
-chacha20-ietf
-salsa20
-rc4-md5
+    aes-128-ctr
+    aes-192-cfb
+    aes-256-cfb
+    aes-128-cfb
+    aes-192-ctr
+    aes-256-ctr
+    chacha20
+    chacha20-ietf
+    salsa20
+    rc4-md5
 )
 # Color
 red='\033[0;31m'
@@ -221,7 +221,7 @@ pre_install(){
 }
 
 # 下载 Shadowsocks-go
-download_files(){
+download_shadowsocks_go(){
     cd ${cur_dir}
     if is_64bit; then
         if ! wget --no-check-certificate -c https://github.com/F00cked/buildSS/raw/master/resources/shadowsocks-server-linux64-1.2.2.gz; then
@@ -262,27 +262,27 @@ download_files(){
 }
 
 # Config shadowsocks
-config_shadowsocks(){
+config_shadowsocks_go(){
     if [ ! -d /etc/shadowsocks ]; then
         mkdir -p /etc/shadowsocks
     fi
     cat > /etc/shadowsocks/config.json<<-EOF
 {
-    "server":"0.0.0.0",
-    "server_ipv6":"::",
+    "server": "0.0.0.0",
+    "server_ipv6": "::",
     "dns_ipv6": true,
-    "server_port":${shadowsocksport},
-    "local_port":1080,
-    "password":"${shadowsockspwd}",
-    "method":"${shadowsockscipher}",
-    "timeout":300,
-    "mode":"tcp_and_udp"
+    "server_port": ${shadowsocksport},
+    "local_port": 1080,
+    "password": "${shadowsockspwd}",
+    "method": "${shadowsockscipher}",
+    "timeout": 300,
+    "mode": "tcp_and_udp"
 }
 EOF
 }
 
 # 配置防火墙
-firewall_set(){
+set_firewall(){
     echo -e "[${green}信息${plain}] 开始配置防火墙!"
     if centosversion 6; then
         /etc/init.d/iptables status > /dev/null 2>&1
@@ -320,7 +320,6 @@ install(){
         echo "Shadowsocks-go 服务安装成功!"
         chmod +x /usr/bin/shadowsocks-server
         chmod +x /etc/init.d/shadowsocks
-
         if check_sys packageManager yum; then
             chkconfig --add shadowsocks
             chkconfig shadowsocks on
@@ -341,10 +340,10 @@ install(){
     clear
     echo
     echo -e "恭喜, Shadowsocks-go 服务安装完成!"
-    echo -e "服务器地址        : \033[41;37m $(get_ip) \033[0m"
-    echo -e "服务端口号        : \033[41;37m ${shadowsocksport} \033[0m"
-    echo -e "客户端密码        : \033[41;37m ${shadowsockspwd} \033[0m"
-    echo -e "客户端加密        : \033[41;37m ${shadowsockscipher} \033[0m"
+    echo -e "服务器地址: \033[41;37m $(get_ip) \033[0m"
+    echo -e "服务端口号: \033[41;37m ${shadowsocksport} \033[0m"
+    echo -e "客户端密码: \033[41;37m ${shadowsockspwd} \033[0m"
+    echo -e "客户端加密: \033[41;37m ${shadowsockscipher} \033[0m"
     echo
 }
 
@@ -381,10 +380,10 @@ uninstall_shadowsocks_go(){
 install_shadowsocks_go(){
     disable_selinux
     pre_install
-    download_files
-    config_shadowsocks
+    download_shadowsocks_go
+    config_shadowsocks_go
     if check_sys packageManager yum; then
-        firewall_set
+        set_firewall
     fi
     install
 }
