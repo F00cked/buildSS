@@ -1,0 +1,138 @@
+# Video
+DOMAIN,content.jwplatform.com
+DOMAIN,videos-f.jwpsrv.com
+// Netflix
+USER-AGENT,Argo*
+DOMAIN-SUFFIX,fast.com
+DOMAIN-SUFFIX,netflix.com
+DOMAIN-SUFFIX,netflix.net
+DOMAIN-SUFFIX,nflxext.com
+DOMAIN-SUFFIX,nflximg.com
+DOMAIN-SUFFIX,nflximg.net
+DOMAIN-SUFFIX,nflxso.net
+DOMAIN-SUFFIX,nflxvideo.net
+// Youtube
+USER-AGENT,*youtube*
+USER-AGENT,YouTube*
+DOMAIN,youtubei.googleapis.com,force-remote-dns
+DOMAIN-SUFFIX,googlevideo.com,force-remote-dns
+DOMAIN-SUFFIX,youtube.com,force-remote-dns
+DOMAIN-SUFFIX,youtube.com
+DOMAIN-SUFFIX,ggpht.com
+DOMAIN-SUFFIX,ytimg.com
+// HBO
+USER-AGENT,HBO%20NOW*
+DOMAIN-SUFFIX,hbo.com
+DOMAIN-SUFFIX,hbogo.com
+// HBO Go
+DOMAIN-SUFFIX,hboasia.com
+DOMAIN-SUFFIX,hbogoasia.hk
+DOMAIN-SUFFIX,execute-api.ap-southeast-1.amazonaws.com
+// Hulu
+USER-AGENT,Hulu*
+DOMAIN-SUFFIX,hulu.com
+DOMAIN-SUFFIX,huluim.com
+DOMAIN-SUFFIX,hulustream.com
+DOMAIN-SUFFIX,happyon.jp
+// Fox+
+USER-AGENT,FOX%20NOW*
+USER-AGENT,FOXPlus*
+DOMAIN-KEYWORD,foxplus
+DOMAIN-SUFFIX,config.fox.com
+DOMAIN-SUFFIX,emome.net
+DOMAIN-SUFFIX,fox.com
+DOMAIN-SUFFIX,foxdcg.com
+DOMAIN-SUFFIX,foxnow.com
+DOMAIN-SUFFIX,foxplus.com
+DOMAIN-SUFFIX,foxplay.com
+DOMAIN-SUFFIX,ipinfo.io
+DOMAIN-SUFFIX,mstage.io
+DOMAIN-SUFFIX,now.com
+DOMAIN-SUFFIX,theplatform.com
+DOMAIN-SUFFIX,urlload.net
+// Amazon Prime Video
+USER-AGENT,InstantVideo.US*
+USER-AGENT,Prime%20Video*
+DOMAIN-SUFFIX,aiv-cdn.net
+DOMAIN-SUFFIX,amazonaws.com
+DOMAIN-SUFFIX,amazonvideo.com
+DOMAIN-SUFFIX,llnwd.net
+// BBC iPlayer
+USER-AGENT,BBCiPlayer*
+USER-AGENT,BBCBeacon*
+DOMAIN-KEYWORD,uk-live
+DOMAIN-KEYWORD,bbcfmt
+DOMAIN-SUFFIX,bbc.com
+DOMAIN-SUFFIX,bbc.co.uk,force-remote-dns
+DOMAIN-SUFFIX,bbci.co.uk,force-remote-dns
+DOMAIN-SUFFIX,vod-hls-uk-live.akamaized.net
+// AbemaTV
+USER-AGENT,AbemaTV*
+DOMAIN-SUFFIX,abema.io
+DOMAIN-SUFFIX,ameba.jp
+DOMAIN-SUFFIX,hayabusa.io
+DOMAIN,linear-abematv.akamaized.net
+// Bahamut
+USER-AGENT,Anime*
+DOMAIN-SUFFIX,bahamut.com.tw
+DOMAIN-SUFFIX,gamer.com.tw
+DOMAIN-SUFFIX,hinet.net
+// Astro
+DOMAIN-SUFFIX,astro.com.my              // Astro
+DOMAIN-SUFFIX,akamaized.net             // Akamaized
+DOMAIN-SUFFIX,toggle.sg                 // Mediacorp
+// TVB myTV Super
+USER-AGENT,mytv*
+USER-AGENT,OTT_iPhone*
+USER-AGENT,Viu*
+USER-AGENT,encoreTVB*                   // encoreTVB
+DOMAIN-KEYWORD,nowtv100
+DOMAIN-KEYWORD,rthklive
+DOMAIN-SUFFIX,mytvsuper.com
+DOMAIN-SUFFIX,tvb.com
+DOMAIN-SUFFIX,viu.com
+DOMAIN-SUFFIX,viu.tv
+// Vidol
+USER-AGENT,Vidol*
+USER-AGENT,Anime*
+DOMAIN-SUFFIX,cdn.hinet.net
+DOMAIN-SUFFIX,vidol.tv
+# Music
+// Hi-Res
+DOMAIN-SUFFIX,mora.jp                   // MORA
+DOMAIN-SUFFIX,highresaudio.com          // Highresaudio
+DOMAIN-SUFFIX,qobuz.com                 // Qobuz
+DOMAIN-SUFFIX,prostudiomasters.com      // Prostudiomasters
+DOMAIN-SUFFIX,hdtracks.com              // HDtracks
+DOMAIN-SUFFIX,7digital.com              // 7digital
+DOMAIN-SUFFIX,tidal.com                 // Tidal
+// Spotify
+USER-AGENT,Spotify*,force-remote-dns
+DOMAIN-KEYWORD,spotify
+DOMAIN-SUFFIX,scdn.co,force-remote-dns
+DOMAIN-SUFFIX,spotify.com,force-remote-dns
+DOMAIN-SUFFIX,spoti.fi,force-remote-dns
+// JOOX
+USER-AGENT,WeMusic*
+USER-AGENT,JOOX*
+DOMAIN-SUFFIX,joox.com
+# JAV
+DOMAIN-SUFFIX,myfreecams.com
+DOMAIN-SUFFIX,kissjav.com
+DOMAIN-SUFFIX,mywife.cc
+DOMAIN-SUFFIX,3xvideos.club
+DOMAIN-SUFFIX,jav789.com
+DOMAIN-SUFFIX,javbuz.com
+DOMAIN-SUFFIX,91porn.com
+DOMAIN-SUFFIX,07130.net
+DOMAIN-SUFFIX,jkforum.net
+DOMAIN-SUFFIX,sexart.com
+DOMAIN-SUFFIX,7mm.tv
+DOMAIN-SUFFIX,xvideos.com
+DOMAIN-SUFFIX,seseporn.com
+DOMAIN-SUFFIX,t66y.com
+DOMAIN-SUFFIX,pskmm.com
+DOMAIN-SUFFIX,eroterest.net
+DOMAIN-SUFFIX,seku.tv
+# Search
+DOMAIN-SUFFIX,1337x.to

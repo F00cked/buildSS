@@ -1,0 +1,71 @@
+# > Devel
+DOMAIN-SUFFIX,redhat.com
+DOMAIN-SUFFIX,vuejs.org
+DOMAIN-SUFFIX,android.com
+DOMAIN-SUFFIX,angularjs.org
+DOMAIN-SUFFIX,quip.com
+DOMAIN-SUFFIX,git-scm.com
+DOMAIN-SUFFIX,kali.org
+DOMAIN-SUFFIX,oracle.com
+# > CDN
+DOMAIN-SUFFIX,cloudflare.com
+DOMAIN-SUFFIX,cloudfront.com
+DOMAIN-SUFFIX,cloudfront.net
+# > Amazon
+DOMAIN-SUFFIX,amazon.com
+DOMAIN-SUFFIX,amazonaws.com
+DOMAIN-KEYWORD,amazon
+# > Github
+DOMAIN-SUFFIX,gitbooks.io
+DOMAIN-SUFFIX,github.com
+DOMAIN-SUFFIX,github.io
+DOMAIN-SUFFIX,githubapp.com
+DOMAIN-SUFFIX,githubusercontent.com
+# > Docker
+DOMAIN-SUFFIX,docker.com
+# > Software
+DOMAIN-SUFFIX,cmacapps.com
+DOMAIN-SUFFIX,stacksocial.com
+# > Google
+DOMAIN-SUFFIX,google.cn
+DOMAIN-SUFFIX,google.co.id
+DOMAIN-SUFFIX,google.co.jp
+DOMAIN-SUFFIX,google.com
+DOMAIN-SUFFIX,google.com.hk
+DOMAIN-SUFFIX,google.com.sg
+DOMAIN-SUFFIX,google.com.tw
+DOMAIN-SUFFIX,google.org
+DOMAIN-SUFFIX,gmail.com
+DOMAIN-SUFFIX,golan.org
+DOMAIN-SUFFIX,golang.org
+DOMAIN-SUFFIX,goldwave.com
+DOMAIN-SUFFIX,gcr.io
+DOMAIN-SUFFIX,goo.gl
+DOMAIN-SUFFIX,googlecode.com
+DOMAIN-SUFFIX,googledrive.com
+DOMAIN-SUFFIX,googlegroups.com
+DOMAIN-SUFFIX,googlemail.com
+DOMAIN-SUFFIX,googlepages.com
+DOMAIN-SUFFIX,googlesile.com
+DOMAIN-SUFFIX,googlesource.com
+DOMAIN-SUFFIX,googleusercontent.com
+DOMAIN-SUFFIX,gstatic.com
+# > Dropbox
+DOMAIN-SUFFIX,dropbox.com
+DOMAIN-SUFFIX,dropboxstatic.com
+DOMAIN-SUFFIX,dropboxusercontent.com
+# > yunpanjingling
+DOMAIN-SUFFIX,yunpanjingling.com
+# > Ulysses
+DOMAIN-SUFFIX,ulyssesapp.com
+# > Virtualization Platform
+DOMAIN-SUFFIX,proxmox.com
+# > ONT
+DOMAIN-SUFFIX,chinadsl.net
+# > Rocket
+DOMAIN-SUFFIX,layerpanel.cloud
+DOMAIN-SUFFIX,layerstack.com
+DOMAIN-SUFFIX,dmit.io
+DOMAIN-SUFFIX,notion.so
+#SpeedDial2
+DOMAIN-SUFFIX,speeddial2.com

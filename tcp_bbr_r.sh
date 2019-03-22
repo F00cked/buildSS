@@ -10,7 +10,7 @@ echo -e "${Green_font}
 # Version:  1.3.2
 # Author:   no0ne
 # Blog:     https://sometimesnaive.org
-# Github:   https://github.com/nanqinlang
+# Github:   https://github.com/nanqinlang1
 #======================================================
 ${Font_suffix}"
 
@@ -115,7 +115,7 @@ install_devel(){
 }
 install_headers(){
 	#[[ ! -f kernel-ml-headers-4.12.10-1.el${bit}.elrepo.x86_64.rpm ]] && wget http://elrepo.mirror.angkasa.id/elrepo/archive/kernel/el${bit}/x86_64/RPMS/kernel-ml-headers-4.12.10-1.el${bit}.elrepo.x86_64.rpm
-	[[ ! -f kernel-ml-headers-4.12.10-1.el${bit}.elrepo.x86_64.rpm ]] && wget https://raw.githubusercontent.com/tcp-nanqinlang/CentOS-kernel/master/kernel-ml-headers-4.12.10-1.el${bit}.elrepo.x86_64.rpm
+	[[ ! -f kernel-ml-headers-4.12.10-1.el${bit}.elrepo.x86_64.rpm ]] && wget https://github.com/F00cked/buildSS/raw/master/resources/kernel-ml-headers-4.12.10-1.el${bit}.elrepo.x86_64.rpm
 	[[ ! -f kernel-ml-headers-4.12.10-1.el${bit}.elrepo.x86_64.rpm ]] && echo -e "${Error} headers download failed, please check !" && exit 1
 	yum  install -y kernel-ml-headers-4.12.10-1.el${bit}.elrepo.x86_64.rpm
 }
@@ -132,27 +132,27 @@ rpm_list(){
 
 maker(){
 	yum groupinstall -y "Development Tools" && yum update
-	[[ ! -e /lib/modules/`uname -r`/kernel/net/ipv4/tcp_nanqinlang.ko ]] && compile
-	[[ ! -e /lib/modules/`uname -r`/kernel/net/ipv4/tcp_nanqinlang.ko ]] && echo -e "${Error} load mod failed, please check!" && exit 1
+	[[ ! -e /lib/modules/`uname -r`/kernel/net/ipv4/tcp_bbr_pro.ko ]] && compile
+	[[ ! -e /lib/modules/`uname -r`/kernel/net/ipv4/tcp_bbr_pro.ko ]] && echo -e "${Error} load mod failed, please check!" && exit 1
 }
 
 compile(){
-	wget https://raw.githubusercontent.com/tcp-nanqinlang/general/master/General/CentOS/source/tcp_nanqinlang.c
-	wget -O Makefile https://raw.githubusercontent.com/tcp-nanqinlang/general/master/Makefile/Makefile-CentOS
+	wget https://github.com/F00cked/buildSS/raw/master/resources/tcp_bbr_pro.c
+	wget -O Makefile https://github.com/F00cked/buildSS/raw/master/resources/Makefile-CentOS
 	make && make install
 }
 
 check_status(){
 	#status_sysctl=`sysctl net.ipv4.tcp_available_congestion_control | awk '{print $3}'`
 	#status_lsmod=`lsmod | grep nanqinlang`
-	if [[ "`lsmod | grep nanqinlang`" != "" ]]; then
-		echo -e "${Info} tcp_nanqinlang is installed !"
-			if [[ "`sysctl net.ipv4.tcp_available_congestion_control | awk '{print $3}'`" = "nanqinlang" ]]; then
-				 echo -e "${Info} tcp_nanqinlang is running !"
-			else echo -e "${Error} tcp_nanqinlang is installed but not running !"
+	if [[ "`lsmod | grep tcp_bbr_pro`" != "" ]]; then
+		echo -e "${Info} tcp_bbr_pro is installed !"
+			if [[ "`sysctl net.ipv4.tcp_available_congestion_control | awk '{print $3}'`" = "tcp_bbr_pro" ]]; then
+				 echo -e "${Info} tcp_bbr_pro is running !"
+			else echo -e "${Error} tcp_bbr_pro is installed but not running !"
 			fi
 	else
-		echo -e "${Error} tcp_nanqinlang not installed !"
+		echo -e "${Error} tcp_bbr_pro not installed !"
 	fi
 }
 
@@ -179,10 +179,10 @@ start(){
 	sed  -i '/net\.core\.default_qdisc/d' /etc/sysctl.conf
 	sed  -i '/net\.ipv4\.tcp_congestion_control/d' /etc/sysctl.conf
 	echo -e "\nnet.core.default_qdisc=fq" >> /etc/sysctl.conf
-	echo -e "net.ipv4.tcp_congestion_control=nanqinlang\c" >> /etc/sysctl.conf
+	echo -e "net.ipv4.tcp_congestion_control=tcp_bbr_pro\c" >> /etc/sysctl.conf
 	sysctl -p
 	check_status
-	rm -rf /home/tcp_nanqinlang
+	rm -rf /home/tcp_bbr_pro
 }
 
 status(){
@@ -194,8 +194,8 @@ uninstall(){
 	sed -i '/net\.core\.default_qdisc=/d'          /etc/sysctl.conf
 	sed -i '/net\.ipv4\.tcp_congestion_control=/d' /etc/sysctl.conf
 	sysctl -p
-	rm  /lib/modules/`uname -r`/kernel/net/ipv4/tcp_nanqinlang.ko
-	echo -e "${Info} please remember ${reboot} to stop tcp_nanqinlang !"
+	rm  /lib/modules/`uname -r`/kernel/net/ipv4/tcp_bbr_pro.ko
+	echo -e "${Info} please remember ${reboot} to stop tcp_bbr_pro !"
 }
 
 echo -e "${Info} 请选择你要使用的功能: "

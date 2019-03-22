@@ -151,7 +151,7 @@ pre_install(){
     # 配置 Shadowsocks-go 密码
     echo "请给 Shadowsocks-go 服务设置一个密码:"
     read -p "(Default password: 1pgZ{Pi]fpEC3Q):" shadowsockspwd
-    [ -z "${shadowsockspwd}" ] && shadowsockspwd="1pgZ{Pi)fpEC3Q"
+    [ -z "${shadowsockspwd}" ] && shadowsockspwd="EC3Q.1pgZ{Pi)fp"
     echo
     echo "---------------------------"
     echo "password = ${shadowsockspwd}"
